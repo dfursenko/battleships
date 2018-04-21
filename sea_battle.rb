@@ -6,6 +6,12 @@ class SeaBattle
     @ships = []
   end
 
+  def create
+    create_sea
+    show_ships
+    set_ships
+  end
+
   def create_sea
 
     # ▪
@@ -20,7 +26,7 @@ class SeaBattle
       print y
       @x.each do |x|
         print '|'
-        print '_' #.bg_green@ships.include?([x,y]) ? '▪' : '_'
+        print @ships.include?([x,y]) ? '▪' : '_'
         print ''
       end
       print '| |   '
@@ -56,16 +62,26 @@ class SeaBattle
     print 'Блок 1/4 - X Y (например: 3 5): '
     xy = gets.chomp.split
     @ships << [xy[0].to_i, xy[1].to_i]
+    create_sea
+    show_ships
+
     print 'Блок 2/4 - X Y: '
     xy = gets.chomp.split
     @ships << [xy[0].to_i, xy[1].to_i]
+    create_sea
+    show_ships
+
     print 'Блок 3/4 - X Y: '
     xy = gets.chomp.split
     @ships << [xy[0].to_i, xy[1].to_i]
+    create_sea
+    show_ships
+
     print 'Блок 4/4 - X Y: '
     xy = gets.chomp.split
     @ships << [xy[0].to_i, xy[1].to_i]
-    p @ships
+    create_sea
+    show_ships
   end
 end
 
