@@ -1,4 +1,5 @@
 require './sea_battle'
 
 sb = SeaBattle.new
-sb.show
+sb.create_sea
+sb.show_ships

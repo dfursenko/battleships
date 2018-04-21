@@ -11,7 +11,7 @@ class SeaBattle
     ]
   end
 
-  def show
+  def create_sea
 
     # ▪
     puts '                          '
@@ -31,6 +31,16 @@ class SeaBattle
       puts ''
     end
     puts '__________________________'
+    puts ''
+  end
+
+  def show_ships
+    puts ''
+    puts 'Подготовка к бою. РАССТАВЬТЕ КОРАБЛИ:'
+    puts " (1) Линкор:  ▪▪▪▪ 1 шт"
+    puts " (2) Крейсер: ▪▪▪ 2 шт"
+    puts " (3) Эсминец: ▪▪ 3 шт"
+    puts " (4) Катер:   ▪ 4 шт"
     puts ''
   end
 end
