@@ -22,7 +22,13 @@ class SeaBattle
       print '|'
       print ' ' unless y == 10
       print y
-      print '|','_','|','_','|','_','|','_','|','_','|','_','|','_','|','_','|','_','|','_','| |'
+      @x.each do |x|
+        print '|'
+        print '_'
+        print ''
+      end
+      print '| |'
+      # print '|_|_|_|_|_|_|_|_|_|_| |'
       puts ''
     end
     puts '__________________________'
