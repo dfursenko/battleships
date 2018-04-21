@@ -15,7 +15,6 @@ class SeaBattle
   end
 
   def create_sea
-
     # ▪
     puts '                                                       '
     puts '        ВАША КАРТА                 КАРТА ПРОТИВНИКА    '
@@ -28,7 +27,7 @@ class SeaBattle
       print y
       @x.each do |x|
         print '|'
-        print @ships.ships.fetch(:a_1).coords.include?([x,y]) ? '▪' : '_'
+        print @ships.all.fetch(:a_1).coords.include?([x, y]) ? '▪' : '_'
         print ''
       end
       print '| |   '
@@ -60,30 +59,41 @@ class SeaBattle
   end
 
   def set_ships
-    print '(1) ЛИНКОР: Блок 1/4 - X Y (например: 3 5): '
-    xy = gets.chomp.split
-    @ships.ships[:a_1].coords << [xy[0].to_i, xy[1].to_i]
-    create_sea
-    show_ships
+    @ships.all.each do |simbol, ship|
+      number = ship_type_number(ship.type)
+      name = ship_ru_name(ship.type)
+      length = ship.length
 
-    print '(1) ЛИНКОР: Блок 2/4 - X Y: '
-    xy = gets.chomp.split
-    @ships.ships[:a_1].coords << [xy[0].to_i, xy[1].to_i]
-    create_sea
-    show_ships
+      (1..4).each do |i|
+        print "(#{number}) #{name}: Блок #{i}/#{length} (x y): "
+        xy = gets.chomp.split
+        ship.coords << [xy[0].to_i, xy[1].to_i]
+        create_sea
+        show_ships
+      end
 
-    print '(1) ЛИНКОР: Блок 3/4 - X Y: '
-    xy = gets.chomp.split
-    @ships.ships[:a_1].coords << [xy[0].to_i, xy[1].to_i]
-    create_sea
-    show_ships
+      ship.displayed = true
+    end
+  end
 
-    print '(1) ЛИНКОР: Блок 4/4 - X Y: '
-    xy = gets.chomp.split
-    @ships.ships[:a_1].coords << [xy[0].to_i, xy[1].to_i]
-    create_sea
-    show_ships
+  def ship_type_number(type)
+    case type
+      when :battleship then type_number = 1
+      when :crase then type_number = 2
+      when :destroyer then type_number = 3
+      when :boat then type_number = 4
+      else false
+    end
+  end
 
+  def ship_ru_name(type)
+    case type
+      when :battleship then ru_name = 'ЛИНКОР'
+      when :crase then tru_name = 'КРЕЙСЕР'
+      when :destroyer then tru_name = 'ЭСМИНЕЦ'
+      when :boat then ru_name = 'КАТЕР'
+      else false
+    end
   end
 end
 
