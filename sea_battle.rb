@@ -7,7 +7,7 @@ class SeaBattle
         [1,1],                    # 1-cell boat
         [3,1],[3,2],              # 2-cells destroyer
         [5,1],[5,2],[5,3],        # 3-cells crase
-        [7,1],[7,2],[7,3],[7,4]   # 4-cells battleship
+        [8,1],[8,2],[8,3],[8,4]   # 4-cells battleship
     ]
   end
 
@@ -24,11 +24,10 @@ class SeaBattle
       print y
       @x.each do |x|
         print '|'
-        print '_'
+        print @ships.include?([x,y]) ? '▪' : '_'
         print ''
       end
       print '| |'
-      # print '|_|_|_|_|_|_|_|_|_|_| |'
       puts ''
     end
     puts '__________________________'
