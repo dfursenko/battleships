@@ -55,4 +55,11 @@ class SeaBattle
     puts "   (4) Катер:   ▪ 4 шт"
     puts ''
   end
+
+  def set_ships
+    puts '(1) ЛИНКОР:'
+    print 'Блок 1/4 - X, Y (например 3, 5): '
+    xy = gets.chomp
+    p xy
+  end
 end
