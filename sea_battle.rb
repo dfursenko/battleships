@@ -18,10 +18,10 @@ class SeaBattle
     puts '       МОРСКОЙ БОЙ!       '
     puts '__________________________'
     puts '|   1 2 3 4 5 6 7 8 9 10 |'
-    @x.each do |x|
+    @y.each do |y|
       print '|'
-      print ' ' unless x == 10
-      print x
+      print ' ' unless y == 10
+      print y
       print '|','_','|','_','|','_','|','_','|','_','|','_','|','_','|','_','|','_','|','_','| |'
       puts ''
     end
