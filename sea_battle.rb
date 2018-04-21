@@ -1,9 +1,11 @@
+require './fleet'
+
 class SeaBattle
 
   def initialize
-    @x = [1,2,3,4,5,6,7,8,9,10]
-    @y = [1,2,3,4,5,6,7,8,9,10]
-    @ships = []
+    @x = (1..10)
+    @y = (1..10)
+    @ships = Fleet.new
   end
 
   def create
@@ -26,7 +28,7 @@ class SeaBattle
       print y
       @x.each do |x|
         print '|'
-        print @ships.include?([x,y]) ? '▪' : '_'
+        print @ships.ships.fetch(:a_1).coords.include?([x,y]) ? '▪' : '_'
         print ''
       end
       print '| |   '
@@ -58,30 +60,30 @@ class SeaBattle
   end
 
   def set_ships
-    puts '(1) ЛИНКОР:'
-    print 'Блок 1/4 - X Y (например: 3 5): '
+    print '(1) ЛИНКОР: Блок 1/4 - X Y (например: 3 5): '
     xy = gets.chomp.split
-    @ships << [xy[0].to_i, xy[1].to_i]
+    @ships.ships[:a_1].coords << [xy[0].to_i, xy[1].to_i]
     create_sea
     show_ships
 
-    print 'Блок 2/4 - X Y: '
+    print '(1) ЛИНКОР: Блок 2/4 - X Y: '
     xy = gets.chomp.split
-    @ships << [xy[0].to_i, xy[1].to_i]
+    @ships.ships[:a_1].coords << [xy[0].to_i, xy[1].to_i]
     create_sea
     show_ships
 
-    print 'Блок 3/4 - X Y: '
+    print '(1) ЛИНКОР: Блок 3/4 - X Y: '
     xy = gets.chomp.split
-    @ships << [xy[0].to_i, xy[1].to_i]
+    @ships.ships[:a_1].coords << [xy[0].to_i, xy[1].to_i]
     create_sea
     show_ships
 
-    print 'Блок 4/4 - X Y: '
+    print '(1) ЛИНКОР: Блок 4/4 - X Y: '
     xy = gets.chomp.split
-    @ships << [xy[0].to_i, xy[1].to_i]
+    @ships.ships[:a_1].coords << [xy[0].to_i, xy[1].to_i]
     create_sea
     show_ships
+
   end
 end
 
