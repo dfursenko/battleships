@@ -3,12 +3,7 @@ class SeaBattle
   def initialize
     @x = [1,2,3,4,5,6,7,8,9,10]
     @y = [1,2,3,4,5,6,7,8,9,10]
-    @ships = [
-        [1,1],                    # 1-cell boat
-        [3,1],[3,2],              # 2-cells destroyer
-        [5,1],[5,2],[5,3],        # 3-cells crase
-        [8,1],[8,2],[8,3],[8,4]   # 4-cells battleship
-    ]
+    @ships = []
   end
 
   def create_sea
@@ -58,9 +53,19 @@ class SeaBattle
 
   def set_ships
     puts '(1) ЛИНКОР:'
-    print 'Блок 1/4 - X, Y (например 3, 5): '
-    xy = gets.chomp
-    p xy
+    print 'Блок 1/4 - X Y (например: 3 5): '
+    xy = gets.chomp.split
+    @ships << [xy[0].to_i, xy[1].to_i]
+    print 'Блок 2/4 - X Y: '
+    xy = gets.chomp.split
+    @ships << [xy[0].to_i, xy[1].to_i]
+    print 'Блок 3/4 - X Y: '
+    xy = gets.chomp.split
+    @ships << [xy[0].to_i, xy[1].to_i]
+    print 'Блок 4/4 - X Y: '
+    xy = gets.chomp.split
+    @ships << [xy[0].to_i, xy[1].to_i]
+    p @ships
   end
 end
 
