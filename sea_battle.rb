@@ -14,33 +14,45 @@ class SeaBattle
   def create_sea
 
     # ▪
-    puts '                          '
-    puts '       МОРСКОЙ БОЙ!       '
-    puts '__________________________'
-    puts '|   1 2 3 4 5 6 7 8 9 10 |'
+    puts '                                                       '
+    puts '        ВАША КАРТА                 КАРТА ПРОТИВНИКА    '
+    puts '_______________________________________________________'
+    puts '|   1 2 3 4 5 6 7 8 9 10 |   |   1 2 3 4 5 6 7 8 9 10 |'
     @y.each do |y|
+      #ваша карта
       print '|'
       print ' ' unless y == 10
       print y
       @x.each do |x|
         print '|'
-        print @ships.include?([x,y]) ? '▪' : '_'
+        print '_' #.bg_green@ships.include?([x,y]) ? '▪' : '_'
+        print ''
+      end
+      print '| |   '
+
+      #карта противника
+      print '|'
+      print ' ' unless y == 10
+      print y
+      @x.each do |x|
+        print '|'
+        print '_'
         print ''
       end
       print '| |'
+
       puts ''
     end
-    puts '__________________________'
+    puts '_______________________________________________________'
     puts ''
   end
 
   def show_ships
-    puts ''
-    puts 'Подготовка к бою. РАССТАВЬТЕ КОРАБЛИ:'
-    puts " (1) Линкор:  ▪▪▪▪ 1 шт"
-    puts " (2) Крейсер: ▪▪▪ 2 шт"
-    puts " (3) Эсминец: ▪▪ 3 шт"
-    puts " (4) Катер:   ▪ 4 шт"
+    puts '  РАССТАВЬТЕ КОРАБЛИ:'
+    puts "   (1) Линкор:  ▪▪▪▪ 1 шт"
+    puts "   (2) Крейсер: ▪▪▪ 2 шт"
+    puts "   (3) Эсминец: ▪▪ 3 шт"
+    puts "   (4) Катер:   ▪ 4 шт"
     puts ''
   end
 end
