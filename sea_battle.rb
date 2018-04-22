@@ -61,14 +61,18 @@ class SeaBattle
     puts ''
   end
 
+  # TODO показать доступные поля
+  # TODO проверить поле, запретить если недступно
+  # TODO задать координаты снова
   def set_ships
     @fleet.ships.each do |ship|
       number = ship_type_number(ship[1].type)
       name = ship_ru_name(ship[1].type)
       length = ship[1].length
+      ship_number = ship[1].number
 
-      (1..4).each do |i|
-        print "(#{number}) #{name}: Блок #{i}/#{length} (x y): "
+      (1..length).each do |i|
+        print "(#{number}) #{name} #{ship_number}: Блок #{i}/#{length} (x y): "
         xy = gets.chomp.split
         ship[1].coords << [xy[0].to_i,xy[1].to_i]
         create_sea

@@ -1,5 +1,5 @@
 class Ship
-  attr_reader :type, :name, :length, :status
+  attr_reader :type, :name, :length, :number, :status
   attr_accessor :coords, :displayed
 
   def initialize(type, name, number)
