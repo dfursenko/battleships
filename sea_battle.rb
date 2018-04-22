@@ -10,8 +10,24 @@ class SeaBattle
 
   def create
     create_sea
-    show_ships
-    set_ships
+    get_setup
+  end
+
+  def get_setup
+    print 'Выберите режим расстановки кораблей: 1 - авто, 2 - ручной: '
+    type = gets.chomp.to_i
+
+    if type == 2
+      create_sea
+      show_ships
+      set_ships
+    else
+      create_fleet
+    end
+  end
+
+  def create_fleet
+    puts 1
   end
 
   def create_sea
