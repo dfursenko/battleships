@@ -2,10 +2,11 @@ class Ship
   attr_reader :type, :name, :length, :number, :status
   attr_accessor :coords, :displayed
 
-  def initialize(type, name, number)
+  def initialize(type, name, number, coords = [])
     @type = type
     @name = name
     @number = number
+    @coords = coords
     case type
       when :battleship then @length = 4
       when :crase then @length = 3
@@ -14,7 +15,6 @@ class Ship
       else false
     end
     @status = :whole
-    @coords = []
     @displayed = false
   end
 
