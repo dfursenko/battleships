@@ -1,11 +1,34 @@
-require './fleet'
+require './ship'
 
 class SeaBattle
 
   def initialize
     @x = (1..10)
     @y = (1..10)
-    @fleet = Fleet.new
+    @ships_player = [
+        [:a_1, Ship.new(:battleship, :a1, 1)],
+        [:b_1, Ship.new(:crase, :b1, 1)],
+        [:b_2, Ship.new(:crase, :b2, 2)],
+        [:c_1, Ship.new(:destroyer, :c1, 1)],
+        [:c_2, Ship.new(:destroyer, :c2, 2)],
+        [:c_3, Ship.new(:destroyer, :c3, 3)],
+        [:d_1, Ship.new(:boat, :d1, 1)],
+        [:d_2, Ship.new(:boat, :d2, 2)],
+        [:d_3, Ship.new(:boat, :d3, 3)],
+        [:d_4, Ship.new(:boat, :d4, 4)]
+    ]
+    @ships_computer = [
+        [:a_1, Ship.new(:battleship, :a1, 1)],
+        [:b_1, Ship.new(:crase, :b1, 1)],
+        [:b_2, Ship.new(:crase, :b2, 2)],
+        [:c_1, Ship.new(:destroyer, :c1, 1)],
+        [:c_2, Ship.new(:destroyer, :c2, 2)],
+        [:c_3, Ship.new(:destroyer, :c3, 3)],
+        [:d_1, Ship.new(:boat, :d1, 1)],
+        [:d_2, Ship.new(:boat, :d2, 2)],
+        [:d_3, Ship.new(:boat, :d3, 3)],
+        [:d_4, Ship.new(:boat, :d4, 4)]
+    ]
   end
 
   def create
@@ -43,7 +66,7 @@ class SeaBattle
       print y
       @x.each do |x|
         print '|'
-        coord = @fleet.ships.find_index do |ship|
+        coord = @ships_player.find_index do |ship|
           ship[1].coords.include?([x,y])
         end
         print coord ? '▪' : '_'
@@ -81,7 +104,7 @@ class SeaBattle
   # TODO проверить поле, запретить если недступно
   # TODO задать координаты снова
   def set_ships
-    @fleet.ships.each do |ship|
+    @ships_player.each do |ship|
       number = ship_type_number(ship[1].type)
       name = ship_ru_name(ship[1].type)
       length = ship[1].length
