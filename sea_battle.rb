@@ -5,7 +5,7 @@ class SeaBattle
   def initialize
     @x = (1..10)
     @y = (1..10)
-    @ships = Fleet.new
+    @fleet = Fleet.new
   end
 
   def create
@@ -27,7 +27,10 @@ class SeaBattle
       print y
       @x.each do |x|
         print '|'
-        print @ships.all.fetch(:a_1).coords.include?([x, y]) ? '▪' : '_'
+        coord = @fleet.ships.find_index do |ship|
+          ship[1].coords.include?([x,y])
+        end
+        print coord ? '▪' : '_'
         print ''
       end
       print '| |   '
@@ -59,20 +62,20 @@ class SeaBattle
   end
 
   def set_ships
-    @ships.all.each do |simbol, ship|
-      number = ship_type_number(ship.type)
-      name = ship_ru_name(ship.type)
-      length = ship.length
+    @fleet.ships.each do |ship|
+      number = ship_type_number(ship[1].type)
+      name = ship_ru_name(ship[1].type)
+      length = ship[1].length
 
       (1..4).each do |i|
         print "(#{number}) #{name}: Блок #{i}/#{length} (x y): "
         xy = gets.chomp.split
-        ship.coords << [xy[0].to_i, xy[1].to_i]
+        ship[1].coords << [xy[0].to_i,xy[1].to_i]
         create_sea
         show_ships
       end
 
-      ship.displayed = true
+      ship[1].displayed = true
     end
   end
 
