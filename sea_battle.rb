@@ -50,7 +50,22 @@ class SeaBattle
       set_player_fleet
       set_computer_fleet
       show_map
+      game_run
     end
+  end
+
+  def game_run
+    puts 'Игра началась!'
+    puts ''
+    print 'Введите координаты выстрела (x y): '
+    shot = gets.chomp.split
+    x = shot[0].to_i
+    y = shot[1].to_i
+
+    goal = @ships_computer.find_index do |ship|
+      ship[1].coords.include?([x,y])
+    end
+    puts goal ? 'Попал!' : 'Мимо!'
   end
 
   # установка флота игрока в автоматическом режиме
