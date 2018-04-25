@@ -172,18 +172,31 @@
   ask_ship_coords_3(4) # => Корабль построен. Его координаты [1, 2, 3, 4].
 
 
-# 5. Дан массив [‘cat’, ‘dog’, ‘tiger’]...
+# 5. Дан массив [‘cat’, ‘dog’, ‘tiger’]. Вернуть массив, состоящий только из элементов...
 
   # Сделано:
   # - возвращается массив элементов содержащих символ 't'
-
-  def only_with_t(a)
-    a.delete_if { |animal| !animal.include?('t') }
-  end
+  # - реализовано в двух вариантах:
+  #    1. с использованием метода map
+  #    2. с использованием метода delete_if (более короткий вариант)
 
   arr = %w[cat, dog, tiger]
-  
-  p only_with_t(arr) # => ["cat,", "tiger"]
 
+  # вариант 1: с использованием map
+  p arr.map { |animal| animal if animal.include?('t') }.compact! # => ["cat,", "tiger"]
+
+  # вариант 2: более короткая запись
+  p arr.delete_if { |animal| !animal.include?('t') } # => ["cat,", "tiger"]
+
+
+# 6. *Дан массив [‘cat’, ‘dog’, ‘tiger’]. Используя итератор map...
+
+  # Сделано:
+  # - выводится список элементов с заглавной буквы, а после - в оригинальном виде
+  # - записано в одну строку
+
+  arr = %w[cat, dog, tiger]
+
+  arr.map(&:capitalize).map{ |a| puts a; a }.map(&:downcase).map{ |a| puts a; a }
 
 
