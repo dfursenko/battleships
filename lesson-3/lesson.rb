@@ -33,7 +33,7 @@
     def Ship.how_many_ships(length)
       raise self.wrong_coords_message unless (1..4).include?(length)
 
-      count =
+      puts count =
         case length
         when 1 then 4
         when 2 then 3
