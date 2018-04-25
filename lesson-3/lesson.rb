@@ -31,7 +31,7 @@
   # - использован условный модификатор
   class Ship
     def Ship.how_many_ships(length)
-      puts self.wrong_coords_message unless (1..4).include?(length)
+      raise self.wrong_coords_message unless (1..4).include?(length)
 
       count =
         case length
@@ -41,7 +41,6 @@
         when 4 then 1
         else false
         end
-      puts count if count
     end
 
     def Ship.wrong_coords_message
@@ -194,9 +193,18 @@
   # Сделано:
   # - выводится список элементов с заглавной буквы, а после - в оригинальном виде
   # - записано в одну строку
+  # - реализовано в двух вариантах:
+  #    1. более короткий
+  #    2. более понятный (с учетом того, что всё в одну строку)
 
   arr = %w[cat, dog, tiger]
 
+  # вариант 1: более короткий
+  arr.map{ |a| puts a.capitalize; a }.map{ |a| puts a.downcase; a }
+  # => Cat, Dog, Tiger, cat, dog, tiger
+
+  # вариант 2: более понятный
   arr.map(&:capitalize).map{ |a| puts a; a }.map(&:downcase).map{ |a| puts a; a }
+  # => Cat, Dog, Tiger, cat, dog, tiger
 
 
