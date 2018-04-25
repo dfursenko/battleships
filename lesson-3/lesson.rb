@@ -31,9 +31,9 @@
   # - использован условный модификатор
   class Ship
     def Ship.how_many_ships(length)
-      raise self.wrong_coords_message unless (1..4).include?(length)
+      puts self.wrong_coords_message unless (1..4).include?(length)
 
-      puts count =
+      count =
         case length
         when 1 then 4
         when 2 then 3
@@ -41,6 +41,7 @@
         when 4 then 1
         else false
         end
+      puts count if count
     end
 
     def Ship.wrong_coords_message
@@ -59,7 +60,7 @@
   # - метод реализован тремя способами:
   #    1. обычное условие
   #    2. тернарный оператор
-  #    3. вариант с модификаторами и с передачей условия сравнения в блоке
+  #    3. вариант с передачей условия сравнения в блоке
 
   # вариант 1: обычное условие
   def ship_request_1(length, coords)
@@ -76,11 +77,9 @@
     puts length == coords.size ? success_message : error_message
   end
 
-  # вариант 3: вариант с модификаторами и с передачей условия сравнения в блоке
+  # вариант 3: передача условия сравнения в блоке
   def ship_request_3(length, coords)
-    result = yield length, coords.size
-    puts success_message if result
-    puts error_message unless result
+    puts yield length, coords.size ? success_message : error_message
   end
 
   def success_message
