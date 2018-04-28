@@ -61,8 +61,15 @@ class Employer
 
   def initialize(name, salary)
     @name = name
+    check(salary)
     @salary = Salary.new(salary.to_f)
     @salary.add_bonus(0.1)
+  end
+
+  def check(salary)
+    unless salary
+      raise 'Укажите зарплату вторым параметром через пробел после имени. '+ "\e[32mПример: Иннокентий 70000\e[0m"
+    end
   end
 
   def to_str
