@@ -6,12 +6,8 @@ require './classes/worker'
 #   Необходимо организовать консольный вывод списка сотрудников и их заработных плат.
 #   Нельзя использовать более трех переменных!
 
-# workers = [
-#     {name: 'Василий', salary: 120000},
-#     {name: 'Игорь', salary: 70000},
-#     {name: 'Николай', salary: 80000},
-#     {name: 'Семён', salary: 100000}
-# ]
+Worker.show_all
+
 $workers = [
     Worker.new('Василий', 120000),
     Worker.new('Игорь', 70000),
@@ -59,18 +55,18 @@ def delete_worker
   $workers.delete_at(number)
 end
 
-list
-ask_action
-case $action
-  when 1 then add_worker
-  when 2 then edit_worker
-  when 3 then delete_worker
-  when 4 then list
-  when 5 then exit
-  else raise 'Выберите действие из предложенных.'
-end
+# list/
+# ask_action
+# case $action
+#   when 1 then add_worker
+#   when 2 then edit_worker
+#   when 3 then delete_worker
+#   when 4 then list
+#   when 5 then exit
+#   else raise 'Выберите действие из предложенных.'
+# end
 
-list
+# list
 
 
 # puts 'Сотрудник ' + worker.name + ' в этом месяце получит ' +

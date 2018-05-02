@@ -41,10 +41,12 @@ class Worker
   end
 
   def Worker.show_all
-    puts 'Список сотрудников:'
-    File.readlines('./db/workers.txt').each do |line|
-      hash = JSON.parse(line)
-      puts "Сотрудник #{hash['name']}, зарплата #{hash['salary'].to_i.to_s_with_spaces}р."
+    puts 'СПИСОК СОТРУДНИКОВ:'
+    File.readlines('./db/workers.txt').each_with_index do |line, index|
+      worker = JSON.parse(line)
+      puts sprintf("Сотрудник %<index>s: %<name>-10s -> зарплата: %<salary>8sр.", {
+          index: index += 1, name: worker['name'], salary: worker['salary'].to_i.to_s_with_spaces
+      })
     end
     puts ''
   end
