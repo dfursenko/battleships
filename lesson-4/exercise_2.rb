@@ -9,9 +9,7 @@ require './classes/worker'
 #   Выполните эту задачу, не используя интерполяцию!
 #   Помните о пустой строке, которая прибавляется при вводе значений с консоли.
 
-print 'Введите имя сотрудника и его зарплату (имя зарплата): '
-name, salary = gets.chomp.split(' ')
-worker = Worker.new(name, salary)
+worker = Worker.get
 
 puts 'Сотрудник ' + worker.name + ' в этом месяце получит ' +
          worker.salary.bonus_int_s_with_spaces + ' ' + worker.salary.formatted(:bonus_int) + ', ' +
