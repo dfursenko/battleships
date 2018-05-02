@@ -10,8 +10,8 @@ name, salary = gets.chomp.split(' ')
 worker = Worker.new(name, salary)
 
 puts 'Сотрудник ' + worker.name + ' в этом месяце получит ' +
-         worker.salary.int + ' ' + worker.salary.formatted(:int) + ', ' +
-         worker.salary.decimal + ' ' + worker.salary.formatted(:decimal) + '!'
+         worker.salary.bonus_int_s_with_spaces + ' ' + worker.salary.formatted(:bonus_int) + ', ' +
+         worker.salary.bonus_decimal_s + ' ' + worker.salary.formatted(:bonus_decimal) + '!'
 
 # РЕЗУЛЬТАТ:
 # Введите имя сотрудника и его зарплату (имя зарплата): Василий
