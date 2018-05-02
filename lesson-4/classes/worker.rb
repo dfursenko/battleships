@@ -28,6 +28,10 @@ class Worker
     [@name + ' ' + @salary.salary.to_s]
   end
 
+  def to_s
+    {name: @name, salary: @salary.salary}.to_s
+  end
+
   def to_str
     name
   end
