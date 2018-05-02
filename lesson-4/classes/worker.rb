@@ -5,12 +5,13 @@ require './classes/salary'
 # - содержит информацию о работнике (имя, зарплата)
 # - проверяет наличие введенной зарплаты
 class Worker
-  attr_accessor :name, :salary
+  attr_accessor :name, :salary, :bonus
 
   def initialize(name, salary)
     @name = name
     @salary = Salary.new(salary.to_f) if check(salary)
     @salary.add_bonus(0.1)
+    @bonus = @salary.bonus
   end
 
   # Проверяет наличие введенной зарплаты и выводит сообщение

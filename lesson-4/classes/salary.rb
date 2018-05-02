@@ -4,44 +4,48 @@ require './classes/helper'
 # Класс Salary
 # - хранит информацию о зарплате,
 # - вычисляет премию
-# - расчитывает информацию о целой и дробной частях зарплаты
+# - расчитывает информацию о целой и дробной частях премии
 # - формирует вывод зарплаты в консоль в необходимом формате
 class Salary
   include Plural
 
-  attr_reader :salary, :int, :decimal
+  attr_reader :salary, :bonus, :bonus_int, :bonus_decimal
 
   def initialize(salary)
     @salary = salary
   end
 
   def calculate
-    @int = @salary.to_i
-    @decimal = ((@salary - @int).round(2) * 100).to_i
+    @bonus_int = @bonus.to_i
+    @bonus_decimal = ((@bonus - @bonus_int).round(2) * 100).to_i
   end
 
   def add_bonus(percent)
-    @salary += @salary *= percent
+    @bonus = @salary + @salary * percent
     calculate
   end
 
-  def int
-    @int.to_s_with_spaces
+  def bonus_int_s_with_spaces
+    @bonus_int.to_s_with_spaces
   end
 
-  def decimal
-    @decimal.to_s
+  def bonus_decimal_s
+    @bonus_decimal.to_s
   end
 
   def formatted(type)
-    if type == :int
-      pluralize(@int, 'рубль', 'рубля', 'рублей')
-    elsif type == :decimal
-      pluralize(@decimal, 'копейку', 'копейки', 'копеек')
+    if type == :bonus_int
+      pluralize(@bonus_int, 'рубль', 'рубля', 'рублей')
+    elsif type == :bonus_decimal
+      pluralize(@bonus_decimal, 'копейку', 'копейки', 'копеек')
     end
   end
 
+  def to_s
+    @salary.to_s
+  end
+
   def to_str
-    @salary
+    @salary.to_s
   end
 end
