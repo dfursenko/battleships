@@ -48,4 +48,8 @@ class Salary
   def to_str
     @salary.to_s
   end
+
+  def to_i
+    @salary.to_i
+  end
 end
