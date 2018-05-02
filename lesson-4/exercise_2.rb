@@ -9,7 +9,7 @@ require './classes/worker'
 #   Выполните эту задачу, не используя интерполяцию!
 #   Помните о пустой строке, которая прибавляется при вводе значений с консоли.
 
-worker = Worker.gets
+worker = Worker.get
 
 puts 'Сотрудник ' + worker.name + ' в этом месяце получит ' +
          worker.salary.bonus_int_s_with_spaces + ' ' + worker.salary.formatted(:bonus_int) + ', ' +
