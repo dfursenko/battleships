@@ -39,4 +39,22 @@ class Worker
   def to_json
     {name: @name, salary: @salary.salary}.to_json
   end
+
+  def Worker.show_all
+    puts 'Список сотрудников:'
+    File.readlines('./db/workers.txt').each do |line|
+      hash = JSON.parse(line)
+      puts "Сотрудник #{hash['name']}, зарплата #{hash['salary'].to_i.to_s_with_spaces}р."
+    end
+    puts ''
+  end
+
+  def Worker.add
+    print 'Введите имя сотрудника и его зарплату (имя зарплата): '
+    name, salary = gets.chomp.split(' ')
+    worker = Worker.new(name, salary)
+    File.open('./db/workers.txt', 'a') do |file|
+      file.puts worker.to_json
+    end
+  end
 end
