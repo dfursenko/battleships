@@ -51,14 +51,14 @@ class Worker
     puts ''
   end
 
-  def Worker.get
+  def Worker.gets
     print 'Введите имя сотрудника и его зарплату (имя зарплата): '
     name, salary = gets.chomp.split(' ')
     Worker.new(name, salary)
   end
 
   def Worker.add
-    worker = Worker.get
+    worker = Worker.gets
     File.open('./db/workers.txt', 'a') do |file|
       file.puts worker.to_json
     end
