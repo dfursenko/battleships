@@ -9,12 +9,12 @@ require './classes/worker'
 #   Выполните эту задачу, не используя интерполяцию!
 #   Помните о пустой строке, которая прибавляется при вводе значений с консоли.
 
-worker = Worker.get
+worker = Worker.gets
 
 puts 'Сотрудник ' + worker.name + ' в этом месяце получит ' +
          worker.salary.bonus_int_s_with_spaces + ' ' + worker.salary.formatted(:bonus_int) + ', ' +
          worker.salary.bonus_decimal_s + ' ' + worker.salary.formatted(:bonus_decimal) + '!'
 
 # РЕЗУЛЬТАТ:
-# Введите имя сотрудника и его зарплату (имя зарплата): Василий 200_234
+# Введите имя сотрудника и его зарплату (имя зарплата): <= Василий 200_234
 # => Сотрудник Василий в этом месяце получит 220 257 рублей, 40 копеек!
