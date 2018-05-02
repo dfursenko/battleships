@@ -40,27 +40,99 @@ class Worker
     {name: @name, salary: @salary.salary}.to_json
   end
 
-  def Worker.show_all
-    puts 'СПИСОК СОТРУДНИКОВ:'
-    File.readlines('./db/workers.txt').each_with_index do |line, index|
-      worker = JSON.parse(line)
-      puts sprintf("Сотрудник %<index>s: %<name>-10s -> зарплата: %<salary>8sр.", {
-          index: index += 1, name: worker['name'], salary: worker['salary'].to_i.to_s_with_spaces
-      })
+  def Worker.route
+    puts 'Выберите действие:',
+         '1 - добавить сотрудника',
+         '2 - изменить данные сотрудника',
+         '3 - удалить сотрудника',
+         '4 - вывести список сотрудников',
+         '5 - завершить работу и выйти из программы'
+
+    case gets.to_i
+      when 1 then add
+      when 2 then edit
+      when 3 then delete
+      when 4 then show_all
+      when 5 then exit
+      else raise 'Выберите действие из предложенных.'
     end
-    puts ''
+
+    show_all
+    route
   end
 
-  def Worker.gets
+  def Worker.show_all
+    design do |content|
+      all.each_with_index do |worker, index|
+        design_line index + 1, worker
+      end
+    end
+  end
+
+  def Worker.all
+    workers = []
+    File.readlines('./db/workers.txt').each do |line|
+      worker = JSON.parse(line)
+      workers << Worker.new(worker['name'], worker['salary'])
+    end
+    workers
+  end
+
+  def Worker.add
+    add_to_file Worker.get
+  end
+
+  def Worker.edit
+    number = get_number
+    new_worker = get
+    workers = all
+    workers[number].name = new_worker.name
+    workers[number].salary = new_worker.salary
+    save workers
+  end
+
+  def Worker.delete
+    workers = all
+    workers.delete_at(get_number)
+    save workers
+  end
+
+  def Worker.get
     print 'Введите имя сотрудника и его зарплату (имя зарплата): '
     name, salary = gets.chomp.split(' ')
     Worker.new(name, salary)
   end
 
-  def Worker.add
-    worker = Worker.gets
+  private
+
+  def Worker.get_number
+    print 'Выберите номер сотрудника: '
+    gets.to_i - 1
+  end
+
+  def Worker.design
+    puts 'СПИСОК СОТРУДНИКОВ:'
+    yield
+    puts ''
+  end
+
+  def Worker.design_line(index, worker)
+    puts sprintf("Сотрудник %<index>s: %<name>-10s -> зарплата: %<salary>8sр.", {
+        index: index, name: worker.name, salary: worker.salary.to_i.to_s_with_spaces
+    })
+  end
+
+  def Worker.add_to_file(worker)
     File.open('./db/workers.txt', 'a') do |file|
       file.puts worker.to_json
+    end
+  end
+
+  def Worker.save(workers)
+    File.open('./db/workers.txt', 'w+') do |file|
+      workers.each do |worker|
+        file.puts worker.to_json
+      end
     end
   end
 end
