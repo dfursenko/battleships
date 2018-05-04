@@ -65,36 +65,21 @@ class Ship
       return true
     end
 
-    if @type == :boat && @@ships[BOAT_QUANTITY] == BOAT_QUANTITY
-      puts 'Катер не создан. Количество катеров не должно превышать 4.'
-      message_ship_enough
-      return true
+    case @type
+    when :boat        then check_quantity BOAT_QUANTITY
+    when :destroyer   then check_quantity DESTROYER_QUANTITY
+    when :crase       then check_quantity CRASE_QUANTITY
+    when :battleship  then check_quantity BATTLESHIP_QUANTITY
+    else false
     end
+  end
 
-    if @type == :destroyer && @@ships[DESTROYER_QUANTITY] == DESTROYER_QUANTITY
-      puts 'Эсминец не создан. Количество эсминцев не должно превышать 3.'
-      return true
-    end
+  def check_quantity(quantity)
+    @@ships[quantity] == quantity ? message_ship_enough : false
+  end
 
-    if @type == :crase && @@ships[CRASE_QUANTITY] == CRASE_QUANTITY
-      puts 'Крейсер не создан. Количество крейсеров не должно превышать 2.'
-      return true
-    end
+  def check_quantity_all
 
-    if @type == :battleship && @@ships[BATTLESHIP_QUANTITY] == BATTLESHIP_QUANTITY
-      puts 'Линкор не создан. Количество линкоров не должно превышать 1.'
-      return true
-    end
-
-    # result =
-    #   case type
-    #     when :all         then    #@@total_ships == MAX_SHIPS
-    #     when :boat        then    #false if
-    #     when :destroyer   then    #@@ships[DESTROYER_QUANTITY]  += 1
-    #     when :crase       then    #@@ships[CRASE_QUANTITY]      += 1
-    #     when :battleship  then    #@@ships[BATTLESHIP_QUANTITY] += 1
-    #     else false
-    #   end
   end
 
   def type_quantity
@@ -119,7 +104,7 @@ class Ship
 
   def message_ship_enough
     puts "#{name_ru.capitalize} не создан, их количество не должно превышать #{type_quantity}."
+    true
   end
-
 
 end
