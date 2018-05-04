@@ -45,6 +45,17 @@ class Ship
     total_ships
   end
 
+  def ships_enough?
+    return true if check_quantity_all
+    case @type
+      when :boat        then check_quantity BOAT_QUANTITY
+      when :destroyer   then check_quantity DESTROYER_QUANTITY
+      when :crase       then check_quantity CRASE_QUANTITY
+      when :battleship  then check_quantity BATTLESHIP_QUANTITY
+      else false
+    end
+  end
+
   def ship_quantity_increase
     case @type
       when :boat        then @@ships[BOAT_QUANTITY] += 1
@@ -59,18 +70,10 @@ class Ship
     @@total_ships = @@ships.inject(0) {|sum, value| sum += value[1]}
   end
 
-  def ships_enough?
+  def check_quantity_all
     if @@total_ships == MAX_SHIPS
       puts 'Корабль не создан. Количество кораблей не должно превышать 10.'
       return true
-    end
-
-    case @type
-    when :boat        then check_quantity BOAT_QUANTITY
-    when :destroyer   then check_quantity DESTROYER_QUANTITY
-    when :crase       then check_quantity CRASE_QUANTITY
-    when :battleship  then check_quantity BATTLESHIP_QUANTITY
-    else false
     end
   end
 
@@ -78,18 +81,9 @@ class Ship
     @@ships[quantity] == quantity ? message_ship_enough : false
   end
 
-  def check_quantity_all
-
-  end
-
-  def type_quantity
-    case @type
-      when :boat       then BOAT_QUANTITY
-      when :destroyer  then DESTROYER_QUANTITY
-      when :crase      then CRASE_QUANTITY
-      when :battleship then BATTLESHIP_QUANTITY
-      else false
-    end
+  def message_ship_enough
+    puts "#{name_ru.capitalize} не создан, их количество не должно превышать #{type_quantity}."
+    true
   end
 
   def name_ru
@@ -102,9 +96,14 @@ class Ship
     end
   end
 
-  def message_ship_enough
-    puts "#{name_ru.capitalize} не создан, их количество не должно превышать #{type_quantity}."
-    true
+  def type_quantity
+    case @type
+      when :boat       then BOAT_QUANTITY
+      when :destroyer  then DESTROYER_QUANTITY
+      when :crase      then CRASE_QUANTITY
+      when :battleship then BATTLESHIP_QUANTITY
+      else false
+    end
   end
 
 end
