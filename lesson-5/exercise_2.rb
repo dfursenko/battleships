@@ -22,17 +22,6 @@ else_one      = Ship.new(:battleship) # => false (12)
 puts "Всего построено кораблей: #{Ship.total_ships}"
 
 # РЕЗУЛЬТАТ
-# => :boat
-# => :boat
-# => :boat
-# => :boat
-# => :destroyer
-# => :destroyer
-# => :destroyer
-# => :crase
-# => :crase
-# => :battleship
-#
 # => Корабль boat не создан. Количество кораблей не должно превышать 10.
 # => Корабль battleship не создан. Количество кораблей не должно превышать 10.
 #
