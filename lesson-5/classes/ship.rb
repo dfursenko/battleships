@@ -105,7 +105,7 @@ class Ship
   def check_quantity_all
     if @@total_ships == MAX_SHIPS
       puts 'Корабль не создан. Количество кораблей не должно превышать 10.'
-      return true
+      true
     end
   end
 
