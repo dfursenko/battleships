@@ -17,11 +17,11 @@ class Ship
       puts self.wrong_coords_message unless (1..4).include?(number)
 
       case number
-        when 1 then 4
-        when 2 then 3
-        when 3 then 2
-        when 4 then 1
-        else false
+      when 1 then 4
+      when 2 then 3
+      when 3 then 2
+      when 4 then 1
+      else false
       end
     end
 
@@ -36,7 +36,39 @@ class Ship
     def ships
       @@ships
     end
+
+    def how_much_all(ship)
+      case ship.type
+      when :boat        then BOAT_QUANTITY
+      when :destroyer   then DESTROYER_QUANTITY
+      when :crase       then CRASE_QUANTITY
+      when :battleship  then BATTLESHIP_QUANTITY
+      else false
+      end
+    end
+
+    def how_much_already(ship)
+      case ship.type
+        when :boat        then @@ships[BOAT_QUANTITY]
+        when :destroyer   then @@ships[DESTROYER_QUANTITY]
+        when :crase       then @@ships[CRASE_QUANTITY]
+        when :battleship  then @@ships[BATTLESHIP_QUANTITY]
+        else false
+      end
+    end
+
+    def how_much_more(ship)
+      case ship.type
+        when :boat        then BOAT_QUANTITY        - @@ships[BOAT_QUANTITY]
+        when :destroyer   then DESTROYER_QUANTITY   - @@ships[DESTROYER_QUANTITY]
+        when :crase       then CRASE_QUANTITY       - @@ships[CRASE_QUANTITY]
+        when :battleship  then BATTLESHIP_QUANTITY  - @@ships[BATTLESHIP_QUANTITY]
+        else false
+      end
+    end
   end
+
+  attr_reader :type
 
   def initialize(type)
     @type = type
@@ -106,4 +138,15 @@ class Ship
     end
   end
 
+  def how_much_all
+    Ship.how_much_all self
+  end
+
+  def how_much_already
+    Ship.how_much_already self
+  end
+
+  def how_much_more
+    Ship.how_much_more self
+  end
 end
