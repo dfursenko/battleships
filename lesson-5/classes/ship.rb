@@ -1,3 +1,5 @@
+require_relative 'coord'
+
 class Ship
   BOAT_QUANTITY = 4
   DESTROYER_QUANTITY = 3
@@ -76,7 +78,7 @@ class Ship
 
   def initialize(type, coords = [])
     @type = type
-    @deck = coords
+    @deck = []
     return if ships_enough?
     deck_build coords
     ship_quantity_increase
@@ -84,13 +86,9 @@ class Ship
   end
 
   def deck_build(coords)
-    p coords
-    case @ship
-    when :boat        then @deck = coords
-    when :destroyer   then @deck = coords
-    when :crase       then @deck = coords
-    when :battleship  then @deck = coords
-    else false
+    coords.each_with_index do |coord, index|
+      deck_number = ('deck_' + (index + 1).to_s).to_sym
+      @deck << Coord.new(coord[0],coord[1], self, deck_number, :entire)
     end
   end
 
@@ -98,8 +96,23 @@ class Ship
     @deck.length
   end
 
-  def status
+  def combat_status
+    entire_decks = @deck.count {|deck| deck.deck_status == :damaged}
+    if entire_decks == length
+      'destroyed'
+    elsif entire_decks == 0
+      'efficient'
+    else
+      'damaged'
+    end
+  end
 
+  def technical_status
+    status = []
+    @deck.each do |deck|
+      status << deck.deck_status
+    end
+    status
   end
 
   def ships_enough?
