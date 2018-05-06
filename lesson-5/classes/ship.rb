@@ -49,52 +49,77 @@ class Ship
 
     def how_much_already(ship)
       case ship.type
-        when :boat        then @@ships[BOAT_QUANTITY]
-        when :destroyer   then @@ships[DESTROYER_QUANTITY]
-        when :crase       then @@ships[CRASE_QUANTITY]
-        when :battleship  then @@ships[BATTLESHIP_QUANTITY]
-        else false
+      when :boat        then @@ships[BOAT_QUANTITY]
+      when :destroyer   then @@ships[DESTROYER_QUANTITY]
+      when :crase       then @@ships[CRASE_QUANTITY]
+      when :battleship  then @@ships[BATTLESHIP_QUANTITY]
+      else false
       end
     end
 
     def how_much_more(ship)
       case ship.type
-        when :boat        then BOAT_QUANTITY        - @@ships[BOAT_QUANTITY]
-        when :destroyer   then DESTROYER_QUANTITY   - @@ships[DESTROYER_QUANTITY]
-        when :crase       then CRASE_QUANTITY       - @@ships[CRASE_QUANTITY]
-        when :battleship  then BATTLESHIP_QUANTITY  - @@ships[BATTLESHIP_QUANTITY]
-        else false
+      when :boat        then BOAT_QUANTITY        - @@ships[BOAT_QUANTITY]
+      when :destroyer   then DESTROYER_QUANTITY   - @@ships[DESTROYER_QUANTITY]
+      when :crase       then CRASE_QUANTITY       - @@ships[CRASE_QUANTITY]
+      when :battleship  then BATTLESHIP_QUANTITY  - @@ships[BATTLESHIP_QUANTITY]
+      else false
       end
     end
   end
 
-  attr_reader :type
+  attr_reader :type, :deck
 
-  def initialize(type)
+  # данные о координатах палуб
+  # данные о состоянии палуб корабля
+  # разные корабли, разная длина
+
+  def initialize(type, coords = [])
     @type = type
+    @deck = coords
     return if ships_enough?
+    deck_build coords
     ship_quantity_increase
     total_ships
+  end
+
+  def deck_build(coords)
+    p coords
+    case @ship
+    when :boat        then @deck = coords
+    when :destroyer   then @deck = coords
+    when :crase       then @deck = coords
+    when :battleship  then @deck = coords
+    else false
+    end
+  end
+
+  def length
+    @deck.length
+  end
+
+  def status
+
   end
 
   def ships_enough?
     return true if check_quantity_all
     case @type
-      when :boat        then check_quantity BOAT_QUANTITY
-      when :destroyer   then check_quantity DESTROYER_QUANTITY
-      when :crase       then check_quantity CRASE_QUANTITY
-      when :battleship  then check_quantity BATTLESHIP_QUANTITY
-      else false
+    when :boat        then check_quantity BOAT_QUANTITY
+    when :destroyer   then check_quantity DESTROYER_QUANTITY
+    when :crase       then check_quantity CRASE_QUANTITY
+    when :battleship  then check_quantity BATTLESHIP_QUANTITY
+    else false
     end
   end
 
   def ship_quantity_increase
     case @type
-      when :boat        then @@ships[BOAT_QUANTITY] += 1
-      when :destroyer   then @@ships[DESTROYER_QUANTITY] += 1
-      when :crase       then @@ships[CRASE_QUANTITY] += 1
-      when :battleship  then @@ships[BATTLESHIP_QUANTITY] += 1
-      else false
+    when :boat        then @@ships[BOAT_QUANTITY] += 1
+    when :destroyer   then @@ships[DESTROYER_QUANTITY] += 1
+    when :crase       then @@ships[CRASE_QUANTITY] += 1
+    when :battleship  then @@ships[BATTLESHIP_QUANTITY] += 1
+    else false
     end
   end
 
@@ -120,21 +145,21 @@ class Ship
 
   def name_ru
     case @type
-      when :boat       then 'катер'
-      when :destroyer  then 'эсминец'
-      when :crase      then 'крейсер'
-      when :battleship then 'линкор'
-      else false
+    when :boat       then 'катер'
+    when :destroyer  then 'эсминец'
+    when :crase      then 'крейсер'
+    when :battleship then 'линкор'
+    else false
     end
   end
 
   def type_quantity
     case @type
-      when :boat       then BOAT_QUANTITY
-      when :destroyer  then DESTROYER_QUANTITY
-      when :crase      then CRASE_QUANTITY
-      when :battleship then BATTLESHIP_QUANTITY
-      else false
+    when :boat       then BOAT_QUANTITY
+    when :destroyer  then DESTROYER_QUANTITY
+    when :crase      then CRASE_QUANTITY
+    when :battleship then BATTLESHIP_QUANTITY
+    else false
     end
   end
 
