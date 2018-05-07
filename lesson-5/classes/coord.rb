@@ -1,7 +1,7 @@
 class Coord
-  attr_accessor :deck_status
+  attr_accessor :x, :y, :deck_status
 
-  def initialize(x, y, ship = nil, deck_number = nil, deck_status)
+  def initialize(x, y, ship = nil, deck_number = nil, deck_status = nil)
     @x = x
     @y = y
     @ship = ship
