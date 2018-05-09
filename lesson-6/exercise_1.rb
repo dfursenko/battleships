@@ -46,7 +46,7 @@ class Coord
 
     def find_ship(x, y, coords)
       coord = coords.find { |coord| (coord.x && coord.x == x) && (coord.y && coord.y == y) }
-      !coord.ship.nil?
+      !coord.ship.class == 'Ship'
     end
   end
 
@@ -62,24 +62,81 @@ class Coord
     @deck_condition = nil     # nil, :whole, :damaged
   end
 
+  def top
+    (self.player == :user) ? find_top(Coord.user) : find_top(Coord.computer)
+  end
+
+  def find_top(coords)
+    coords.find { |coord| coord.x == self.x && coord.y == self.y - 1 }
+  end
+
   def right
     (self.player == :user) ? find_right(Coord.user) : find_right(Coord.computer)
   end
 
   def find_right(coords)
-      coords.find { |coord| coord.x == self.x + 1 && coord.y == self.y }
+    coords.find { |coord| coord.x == self.x + 1 && coord.y == self.y }
   end
 
   def down
-    (self.player == :player) ? find_down(Coord.user) : find_down(Coord.computer)
+    (self.player == :user) ? find_down(Coord.user) : find_down(Coord.computer)
   end
 
   def find_down(coords)
     coords.find { |coord| coord.x == self.x && coord.y == self.y + 1 }
   end
 
+  def left
+    (self.player == :user) ? find_left(Coord.user) : find_left(Coord.computer)
+  end
+
+  def find_left(coords)
+    coords.find { |coord| coord.x == self.x - 1 && coord.y == self.y }
+  end
+
+  def left_top
+    (self.player == :user) ? find_left_top(Coord.user) : find_left_top(Coord.computer)
+  end
+
+  def find_left_top(coords)
+    coords.find { |coord| coord.x == self.x - 1 && coord.y == self.y - 1 }
+  end
+
+  def right_top
+    (self.player == :user) ? find_right_top(Coord.user) : find_right_top(Coord.computer)
+  end
+
+  def find_right_top(coords)
+    coords.find { |coord| coord.x == self.x + 1 && coord.y == self.y - 1 }
+  end
+
+  def left_down
+    (self.player == :user) ? find_left_down(Coord.user) : find_left_down(Coord.computer)
+  end
+
+  def find_left_down(coords)
+    coords.find { |coord| coord.x == self.x - 1 && coord.y == self.y + 1 }
+  end
+
+  def right_down
+    (self.player == :user) ? find_right_down(Coord.user) : find_right_down(Coord.computer)
+  end
+
+  def find_right_down(coords)
+    coords.find { |coord| coord.x == self.x + 1 && coord.y == self.y + 1 }
+  end
+
+  def ship?
+    # p self unless self.ship.nil?
+    true if self.ship.class == Ship
+  end
+
+  def near_ship?
+    true if self.ship == :near_ship
+  end
+
   def to_s
-    [self.x, self.y].to_s
+    [self.x, self.y, self.player, self.ship, self.deck, self.deck_condition].to_s
   end
 end
 class Shot
@@ -96,8 +153,8 @@ class Board
 
     # в случайном порядке расставляет корабли на картах игрока и компьютера
     def locate_ships
-      Ship.user_ships.each { |ship| locate_random ship, Coord.user; break }
-      Ship.computer_ships.each { |ship| locate_random ship, Coord.computer; break }
+      Ship.user_ships.each { |ship| locate_random ship, Coord.user }
+      Ship.computer_ships.each { |ship| locate_random ship, Coord.computer }
     end
 
     def locate_random(ship, coords)
@@ -123,8 +180,19 @@ class Board
         cursor = coord
         (1..ship.length).each do |step|
           break unless cursor
-          place << cursor if cursor && cursor.ship.nil?
+          place << cursor if cursor.ship.nil?
           cursor = cursor.right
+        end
+        free_places << place if place.length == ship.length
+      end
+
+      free_coords.each do |coord|
+        place = []
+        cursor = coord
+        (1..ship.length).each do |step|
+          break unless cursor
+          place << cursor if cursor.ship.nil?
+          cursor = cursor.down
         end
         free_places << place if place.length == ship.length
       end
@@ -132,17 +200,36 @@ class Board
     end
 
     def locate_ship_random(ship, free_places)
-      ship.coords = free_places[Random.rand(1..free_places.length)]
+      # p ship
+      p free_places.length
+      random = Random.rand(1..free_places.length)
+
+      ship.coords = free_places[random]
+      p ship.coords
+
       ship.coords.each_with_index do |coord, idx|
         coord.ship = ship
         coord.deck = idx + 1
         coord.deck_condition = :whole
       end
-      # p ship
-      # установить в координаты данные о корабле
-      # отрисовать корабль
-      # сделать вертикальный вариант корабля
-      # проверить как это работает с остальными кораблями
+
+      near_coords = []
+      ship.coords.each do |coord|
+        near_coords << coord.top if coord.top
+        near_coords << coord.left if coord.left
+        near_coords << coord.right if coord.right
+        near_coords << coord.down if coord.down
+        near_coords << coord.left_top if coord.left_top
+        near_coords << coord.right_top if coord.right_top
+        near_coords << coord.left_down if coord.left_down
+        near_coords << coord.right_down if coord.right_down
+      end
+
+      near_coords.each do |coord|
+        coord.ship = :near_ship unless coord.ship.class == Ship
+      end
+
+      # найти почему возникает ошибка
     end
 
     def draw
@@ -150,13 +237,30 @@ class Board
       (1..Board.y).each do |y|
         print sprintf(" %2d|", y)
         (1..Board.x).each do |x|
-          # p Coord.ship?(x, y)
-          print (Coord.ship?(x, y)) ? "▪" : "_"
+          coord = Coord.user.find { |coord| coord.x == x && coord.y == y }
+
+          result = if coord.ship?
+                     "▪"
+                   elsif coord.near_ship?
+                     "·"
+                   else
+                     "_"
+                   end
+          print result
           print '|'
         end
         print sprintf(" %2d|", y)
         (1..Board.x).each do |x|
-          print (Coord.ship?(x, y, :computer)) ? "▪" : "_"
+          coord = Coord.computer.find { |coord| coord.x == x && coord.y == y }
+
+          result = if coord.ship?
+                     "▪"
+                   elsif coord.near_ship?
+                     "·"
+                   else
+                     "_"
+                   end
+          print result
           print '|'
         end
         puts ''
