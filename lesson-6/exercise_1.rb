@@ -21,12 +21,15 @@
 class Coord
   class << self
     attr_accessor :user, :computer
+
     def user_board(x = 10, y = 10)
       @user ||= build_board x, y
     end
+
     def computer_board(x, y)
       @computer ||= build_board x, y
     end
+
     def build_board(x, y)
       result = []
       (1..x).each do |x|
@@ -37,10 +40,15 @@ class Coord
       result
     end
   end
+
   attr_reader :x, :y
+
   def initialize(x, y)
     @x = x
     @y = y
+    @ship = nil               # nil, :near_ship, Ship
+    @deck = nil               # nil, 1, 2, 3, 4
+    @deck_condition = nil     # nil, :whole, :damaged
   end
 end
 class Shot
@@ -54,11 +62,11 @@ class Board
     end
   end
 
-  attr_accessor :user, :comp
+  attr_accessor :user, :computer
 
   def initialize(x, y)
-    @user = Coord.user_board x, y       # доска игрока 10х10
-    @comp = Coord.computer_board x, y   # доска компьютера 10х10
+    @user = Coord.user_board x, y             # доска игрока 10х10
+    @computer = Coord.computer_board x, y     # доска компьютера 10х10
     @shoots = []                              # кто, куда, результат
   end
 
@@ -74,17 +82,39 @@ end
 class Ship
   class << self
     def create_ships
-      p Coord.user_board
+      @user_ships ||= build_ships
+      @computer_ships ||= build_ships
+      # p Coord.user_board
     end
 
+    def build_ships
+      [
+          {boat1: Ship.new(:boat, 'boat1')},
+          {boat2: Ship.new(:boat, 'boat2')},
+          {boat3: Ship.new(:boat, 'boat3')},
+          {boat4: Ship.new(:boat, 'boat4')},
+          {destroyer1: Ship.new(:destroyer, 'destroyer1')},
+          {destroyer2: Ship.new(:destroyer, 'destroyer2')},
+          {destroyer3: Ship.new(:destroyer, 'destroyer3')},
+          {cruiser1: Ship.new(:cruiser, 'cruiser1')},
+          {cruiser2: Ship.new(:cruiser, 'cruiser2')},
+          {battleship: Ship.new(:battleship, 'battleship')},
+      ]
+    end
+  end
+
+  def initialize(type, name)
+    @type = type
+    @name = name
   end
 end
 
 
 
 board = Board.create 10, 10
-p board.user
+# p board.user
 ships = Ship.create_ships
+p ships
 # board.locate_ships ships
 # board.draw
 # board.game
