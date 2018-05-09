@@ -39,6 +39,15 @@ class Coord
       end
       result
     end
+
+    def ship?(x, y, player = :user)
+      (player == :user) ? find_ship(x, y, Coord.user) : find_ship(x, y, Coord.computer)
+    end
+
+    def find_ship(x, y, coords)
+      coord = coords.find { |coord| (coord.x && coord.x == x) && (coord.y && coord.y == y) }
+      !coord.ship.nil?
+    end
   end
 
   attr_reader :x, :y, :player
@@ -54,7 +63,7 @@ class Coord
   end
 
   def right
-    (self.player == :player) ? find_right(Coord.user) : find_right(Coord.computer)
+    (self.player == :user) ? find_right(Coord.user) : find_right(Coord.computer)
   end
 
   def find_right(coords)
@@ -129,7 +138,7 @@ class Board
         coord.deck = idx + 1
         coord.deck_condition = :whole
       end
-      p ship
+      # p ship
       # установить в координаты данные о корабле
       # отрисовать корабль
       # сделать вертикальный вариант корабля
@@ -141,11 +150,14 @@ class Board
       (1..Board.y).each do |y|
         print sprintf(" %2d|", y)
         (1..Board.x).each do |x|
-          print "_|"
+          # p Coord.ship?(x, y)
+          print (Coord.ship?(x, y)) ? "▪" : "_"
+          print '|'
         end
         print sprintf(" %2d|", y)
         (1..Board.x).each do |x|
-          print "_|"
+          print (Coord.ship?(x, y, :computer)) ? "▪" : "_"
+          print '|'
         end
         puts ''
       end
