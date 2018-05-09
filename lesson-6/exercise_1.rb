@@ -19,6 +19,24 @@
 # 2. Создать корабли, разместить их на карте, нарисовать их
 # 3.
 class Coord
+  class << self
+    attr_accessor :user, :computer
+    def user_board(x = 10, y = 10)
+      @user ||= build_board x, y
+    end
+    def computer_board(x, y)
+      @computer ||= build_board x, y
+    end
+    def build_board(x, y)
+      result = []
+      (1..x).each do |x|
+        (1..y).each do |y|
+          result << Coord.new(x, y)
+        end
+      end
+      result
+    end
+  end
   attr_reader :x, :y
   def initialize(x, y)
     @x = x
@@ -26,10 +44,8 @@ class Coord
   end
 end
 class Shot
-
 end
 class User
-
 end
 class Board
   class << self
@@ -38,22 +54,12 @@ class Board
     end
   end
 
-  attr_accessor :coords_user, :coords_comp
+  attr_accessor :user, :comp
 
   def initialize(x, y)
-    @coords_user = coords_build x, y
-    @coords_comp = coords_build x, y
-
-  end
-
-  def coords_build(x, y)
-    result = []
-    (1..x).each do |x|
-      (1..y).each do |y|
-        result << Coord.new(x, y)
-      end
-    end
-    result
+    @user = Coord.user_board x, y       # доска игрока 10х10
+    @comp = Coord.computer_board x, y   # доска компьютера 10х10
+    @shoots = []                              # кто, куда, результат
   end
 
   def locate_ships(ships)
@@ -68,7 +74,7 @@ end
 class Ship
   class << self
     def create_ships
-
+      p Coord.user_board
     end
 
   end
@@ -77,7 +83,8 @@ end
 
 
 board = Board.create 10, 10
+p board.user
 ships = Ship.create_ships
-board.locate_ships ships
-board.draw
-board.game
+# board.locate_ships ships
+# board.draw
+# board.game
