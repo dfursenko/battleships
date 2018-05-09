@@ -57,51 +57,73 @@ class User
 end
 class Board
   class << self
+    attr_accessor :x, :y
+
     def create(x, y)
       @instance ||= self.new x, y
+    end
+
+    # в случайном порядке расставляет корабли на карте
+    def locate_ships
+
+    end
+
+    def draw
+      puts "    А Б В Г Д Е Ж З И К     А Б В Г Д Е Ж З И К"
+      (1..Board.y).each do |y|
+        print sprintf(" %2d|", y)
+        (1..Board
+                .x).each do |x|
+          print "_|"
+        end
+        print sprintf(" %2d|", y)
+        (1..Board
+                .x).each do |x|
+          print "_|"
+        end
+        puts ''
+      end
     end
   end
 
   attr_accessor :user, :computer
 
   def initialize(x, y)
+    Board.x = x
+    Board.y = y
     @user = Coord.user_board x, y             # доска игрока 10х10
     @computer = Coord.computer_board x, y     # доска компьютера 10х10
     @shoots = []                              # кто, куда, результат
   end
 
-  def locate_ships(ships)
 
-  end
-
-  def draw
-    puts "А Б В Г Д Е Ж З И К     А Б В Г Д Е Ж З И К"
-
-  end
 end
 class Ship
   class << self
+    attr_reader :user_ships, :computer_ships
+
     def create_ships
       @user_ships ||= build_ships
       @computer_ships ||= build_ships
-      # p Coord.user_board
     end
 
     def build_ships
       [
-          {boat1: Ship.new(:boat, 'boat1')},
-          {boat2: Ship.new(:boat, 'boat2')},
-          {boat3: Ship.new(:boat, 'boat3')},
-          {boat4: Ship.new(:boat, 'boat4')},
+          {battleship: Ship.new(:battleship, 'battleship')},
+          {cruiser1: Ship.new(:cruiser, 'cruiser1')},
+          {cruiser2: Ship.new(:cruiser, 'cruiser2')},
           {destroyer1: Ship.new(:destroyer, 'destroyer1')},
           {destroyer2: Ship.new(:destroyer, 'destroyer2')},
           {destroyer3: Ship.new(:destroyer, 'destroyer3')},
-          {cruiser1: Ship.new(:cruiser, 'cruiser1')},
-          {cruiser2: Ship.new(:cruiser, 'cruiser2')},
-          {battleship: Ship.new(:battleship, 'battleship')},
+          {boat1: Ship.new(:boat, 'boat1')},
+          {boat2: Ship.new(:boat, 'boat2')},
+          {boat3: Ship.new(:boat, 'boat3')},
+          {boat4: Ship.new(:boat, 'boat4')}
       ]
     end
   end
+
+  attr_accessor :coords
 
   def initialize(type, name)
     @type = type
@@ -111,10 +133,8 @@ end
 
 
 
-board = Board.create 10, 10
-# p board.user
-ships = Ship.create_ships
-p ships
-# board.locate_ships ships
-# board.draw
-# board.game
+Board.create 10, 10
+Ship.create_ships
+Board.locate_ships
+Board.draw
+# Board.game
