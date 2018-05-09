@@ -41,7 +41,7 @@ class Coord
     end
   end
 
-  attr_reader :x, :y
+  attr_reader :x, :y, :ship, :deck, :deck_condition
 
   def initialize(x, y)
     @x = x
@@ -65,6 +65,29 @@ class Board
 
     # в случайном порядке расставляет корабли на карте
     def locate_ships
+      Ship.user_ships.each do |ship|
+        free_coords = Coord.user.select {|coord| coord.ship.nil? }
+        free_places = find_free_places ship, free_coords
+        locate_ship_random ship, free_places
+
+        break
+      end
+
+      # Создать массив всех возможных расположений
+      # случайным образом выбрать одно из расположений
+      # расположить
+
+      direction = Random.rand(0..1)       # 0 - x, 1 - y
+      x = Random.rand(1..Board.x)
+      y = Random.rand(1..Board.y)
+      p x
+    end
+
+    def find_free_places(ship, free_coords)
+      p free_coords
+    end
+
+    def locate_ship_random(ship, free_places)
 
     end
 
@@ -72,13 +95,11 @@ class Board
       puts "    А Б В Г Д Е Ж З И К     А Б В Г Д Е Ж З И К"
       (1..Board.y).each do |y|
         print sprintf(" %2d|", y)
-        (1..Board
-                .x).each do |x|
+        (1..Board.x).each do |x|
           print "_|"
         end
         print sprintf(" %2d|", y)
-        (1..Board
-                .x).each do |x|
+        (1..Board.x).each do |x|
           print "_|"
         end
         puts ''
@@ -128,6 +149,17 @@ class Ship
   def initialize(type, name)
     @type = type
     @name = name
+    @length = length type
+  end
+
+  def length(type)
+    case type
+      when :boat        then 1
+      when :destroyer   then 2
+      when :cruiser     then 3
+      when :battleship  then 4
+      else false
+    end
   end
 end
 
