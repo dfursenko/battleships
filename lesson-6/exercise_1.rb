@@ -4,20 +4,6 @@
 # 1. При создании кораблика должен создаваться массив, размера, соответствующего размеру кораблика,
 #   и состоящий из координат Х и Y. Подумать, что будет служить элементом в таком массиве.
 
-# battleship = Ship.new(:battleship, [[1,1],[1,2],[1,3],[1,4]])
-#
-# puts battleship
-
-# есть список объектов кораблей, которые состоят из списка объектов координат
-# координаты содержат информацию о том, что в них находится. кликнув в координату можно узнать,
-# что там есть палуба кораблся, можно узнать какого кораблся. Или можно узнать, что эта координата занята, потому что
-# рядом уже стоит корабль. Можно узнать состояние палубы корабля. Но нельзя узнать состояние корабля.
-# Состояние кораблся можно узнать у корабля, насколько он целый.
-#
-#
-# 1. Создать карту, нарисовать её
-# 2. Создать корабли, разместить их на карте, нарисовать их
-# 3.
 class Coord
   class << self
     attr_accessor :user, :computer
@@ -160,11 +146,8 @@ class Board
     def locate_random(ship, coords)
       # сначала ищем свободные координаты
       free_coords = free_coords coords
-      # puts free_coords
-
       # потом ищем своодные места
       free_places = free_places ship, free_coords
-
       # случайным образом выбираем свободное место и устанавливаем корабль
       locate_ship_random ship, free_places
     end
@@ -200,13 +183,8 @@ class Board
     end
 
     def locate_ship_random(ship, free_places)
-      # p ship
-      p free_places.length
       random = Random.rand(1..free_places.length)
-
-      ship.coords = free_places[random]
-      p ship.coords
-
+      ship.coords = free_places[random - 1]
       ship.coords.each_with_index do |coord, idx|
         coord.ship = ship
         coord.deck = idx + 1
@@ -228,8 +206,6 @@ class Board
       near_coords.each do |coord|
         coord.ship = :near_ship unless coord.ship.class == Ship
       end
-
-      # найти почему возникает ошибка
     end
 
     def draw
@@ -277,9 +253,8 @@ class Board
     @computer = Coord.computer_board x, y     # доска компьютера 10х10
     @shoots = []                              # кто, куда, результат
   end
-
-
 end
+
 class Ship
   class << self
     attr_reader :user_ships, :computer_ships
@@ -307,11 +282,11 @@ class Ship
 
   attr_accessor :coords, :name, :length
 
-  def initialize(type, name)
+  def initialize(type, name, coords = [])
     @type = type
     @name = name
     @length = ship_length type
-    @coords = []
+    @coords = coords
   end
 
   def ship_length(type)
