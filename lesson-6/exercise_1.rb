@@ -23,32 +23,54 @@ class Coord
     attr_accessor :user, :computer
 
     def user_board(x = 10, y = 10)
-      @user ||= build_board x, y
+      @user ||= build_board x, y, :user
     end
 
     def computer_board(x, y)
-      @computer ||= build_board x, y
+      @computer ||= build_board x, y, :computer
     end
 
-    def build_board(x, y)
+    def build_board(x, y, player)
       result = []
-      (1..x).each do |x|
-        (1..y).each do |y|
-          result << Coord.new(x, y)
+      (1..y).each do |y|
+        (1..x).each do |x|
+          result << Coord.new(x, y, player)
         end
       end
       result
     end
   end
 
-  attr_reader :x, :y, :ship, :deck, :deck_condition
+  attr_reader :x, :y, :player
+  attr_accessor :ship, :deck, :deck_condition
 
-  def initialize(x, y)
+  def initialize(x, y, player)
     @x = x
     @y = y
+    @player = player
     @ship = nil               # nil, :near_ship, Ship
     @deck = nil               # nil, 1, 2, 3, 4
     @deck_condition = nil     # nil, :whole, :damaged
+  end
+
+  def right
+    (self.player == :player) ? find_right(Coord.user) : find_right(Coord.computer)
+  end
+
+  def find_right(coords)
+      coords.find { |coord| coord.x == self.x + 1 && coord.y == self.y }
+  end
+
+  def down
+    (self.player == :player) ? find_down(Coord.user) : find_down(Coord.computer)
+  end
+
+  def find_down(coords)
+    coords.find { |coord| coord.x == self.x && coord.y == self.y + 1 }
+  end
+
+  def to_s
+    [self.x, self.y].to_s
   end
 end
 class Shot
@@ -63,32 +85,55 @@ class Board
       @instance ||= self.new x, y
     end
 
-    # в случайном порядке расставляет корабли на карте
+    # в случайном порядке расставляет корабли на картах игрока и компьютера
     def locate_ships
-      Ship.user_ships.each do |ship|
-        free_coords = Coord.user.select {|coord| coord.ship.nil? }
-        free_places = find_free_places ship, free_coords
-        locate_ship_random ship, free_places
-
-        break
-      end
-
-      # Создать массив всех возможных расположений
-      # случайным образом выбрать одно из расположений
-      # расположить
-
-      direction = Random.rand(0..1)       # 0 - x, 1 - y
-      x = Random.rand(1..Board.x)
-      y = Random.rand(1..Board.y)
-      p x
+      Ship.user_ships.each { |ship| locate_random ship, Coord.user; break }
+      Ship.computer_ships.each { |ship| locate_random ship, Coord.computer; break }
     end
 
-    def find_free_places(ship, free_coords)
-      p free_coords
+    def locate_random(ship, coords)
+      # сначала ищем свободные координаты
+      free_coords = free_coords coords
+      # puts free_coords
+
+      # потом ищем своодные места
+      free_places = free_places ship, free_coords
+
+      # случайным образом выбираем свободное место и устанавливаем корабль
+      locate_ship_random ship, free_places
+    end
+
+    def free_coords(coords)
+      coords.select {|coord| coord.ship.nil? }
+    end
+
+    def free_places(ship, free_coords)
+      free_places = []
+      free_coords.each do |coord|
+        place = []
+        cursor = coord
+        (1..ship.length).each do |step|
+          break unless cursor
+          place << cursor if cursor && cursor.ship.nil?
+          cursor = cursor.right
+        end
+        free_places << place if place.length == ship.length
+      end
+      free_places
     end
 
     def locate_ship_random(ship, free_places)
-
+      ship.coords = free_places[Random.rand(1..free_places.length)]
+      ship.coords.each_with_index do |coord, idx|
+        coord.ship = ship
+        coord.deck = idx + 1
+        coord.deck_condition = :whole
+      end
+      p ship
+      # установить в координаты данные о корабле
+      # отрисовать корабль
+      # сделать вертикальный вариант корабля
+      # проверить как это работает с остальными кораблями
     end
 
     def draw
@@ -130,29 +175,30 @@ class Ship
 
     def build_ships
       [
-          {battleship: Ship.new(:battleship, 'battleship')},
-          {cruiser1: Ship.new(:cruiser, 'cruiser1')},
-          {cruiser2: Ship.new(:cruiser, 'cruiser2')},
-          {destroyer1: Ship.new(:destroyer, 'destroyer1')},
-          {destroyer2: Ship.new(:destroyer, 'destroyer2')},
-          {destroyer3: Ship.new(:destroyer, 'destroyer3')},
-          {boat1: Ship.new(:boat, 'boat1')},
-          {boat2: Ship.new(:boat, 'boat2')},
-          {boat3: Ship.new(:boat, 'boat3')},
-          {boat4: Ship.new(:boat, 'boat4')}
+          Ship.new(:battleship, 'battleship'),
+          Ship.new(:cruiser, 'cruiser1'),
+          Ship.new(:cruiser, 'cruiser2'),
+          Ship.new(:destroyer, 'destroyer1'),
+          Ship.new(:destroyer, 'destroyer2'),
+          Ship.new(:destroyer, 'destroyer3'),
+          Ship.new(:boat, 'boat1'),
+          Ship.new(:boat, 'boat2'),
+          Ship.new(:boat, 'boat3'),
+          Ship.new(:boat, 'boat4')
       ]
     end
   end
 
-  attr_accessor :coords
+  attr_accessor :coords, :name, :length
 
   def initialize(type, name)
     @type = type
     @name = name
-    @length = length type
+    @length = ship_length type
+    @coords = []
   end
 
-  def length(type)
+  def ship_length(type)
     case type
       when :boat        then 1
       when :destroyer   then 2
