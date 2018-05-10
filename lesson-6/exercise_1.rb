@@ -113,7 +113,6 @@ class Coord
   end
 
   def ship?
-    # p self unless self.ship.nil?
     true if self.ship.class == Ship
   end
 
@@ -158,88 +157,60 @@ class Board
 
     def free_places(ship, free_coords)
       free_places = []
-      free_coords.each do |coord|
-        place = []
-        cursor = coord
-        (1..ship.length).each do |step|
-          break unless cursor
-          place << cursor if cursor.ship.nil?
-          cursor = cursor.right
-        end
-        free_places << place if place.length == ship.length
-      end
-
-      free_coords.each do |coord|
-        place = []
-        cursor = coord
-        (1..ship.length).each do |step|
-          break unless cursor
-          place << cursor if cursor.ship.nil?
-          cursor = cursor.down
-        end
-        free_places << place if place.length == ship.length
-      end
+      collect_free_places(ship, free_coords, free_places, :horizontal)
+      collect_free_places(ship, free_coords, free_places, :vertical)
       free_places
     end
 
+    def collect_free_places(ship, free_coords, free_places, direction)
+      free_coords.each do |coord|
+        place = []
+        cursor = coord
+        (1..ship.length).each do |step|
+          break unless cursor
+          place << cursor if cursor.ship.nil?
+          cursor = direction == :horizontal ? cursor.right : cursor.down
+        end
+        free_places << place if place.length == ship.length
+      end
+    end
+
     def locate_ship_random(ship, free_places)
-      random = Random.rand(1..free_places.length)
-      ship.coords = free_places[random - 1]
-      ship.coords.each_with_index do |coord, idx|
-        coord.ship = ship
-        coord.deck = idx + 1
-        coord.deck_condition = :whole
-      end
+      ship.coords = random_coords free_places
+      ship.fill_coords
+      ship.near_coords
+    end
 
-      near_coords = []
-      ship.coords.each do |coord|
-        near_coords << coord.top if coord.top
-        near_coords << coord.left if coord.left
-        near_coords << coord.right if coord.right
-        near_coords << coord.down if coord.down
-        near_coords << coord.left_top if coord.left_top
-        near_coords << coord.right_top if coord.right_top
-        near_coords << coord.left_down if coord.left_down
-        near_coords << coord.right_down if coord.right_down
-      end
+    def random_coords(free_places)
+      index = random_index(free_places)
+      free_places[index - 1]
+    end
 
-      near_coords.each do |coord|
-        coord.ship = :near_ship unless coord.ship.class == Ship
-      end
+    def random_index(free_places)
+      Random.rand(1..free_places.length)
     end
 
     def draw
       puts "    А Б В Г Д Е Ж З И К     А Б В Г Д Е Ж З И К"
       (1..Board.y).each do |y|
-        print sprintf(" %2d|", y)
-        (1..Board.x).each do |x|
-          coord = Coord.user.find { |coord| coord.x == x && coord.y == y }
-
-          result = if coord.ship?
-                     "▪"
-                   elsif coord.near_ship?
-                     "·"
-                   else
-                     "_"
-                   end
-          print result
-          print '|'
-        end
-        print sprintf(" %2d|", y)
-        (1..Board.x).each do |x|
-          coord = Coord.computer.find { |coord| coord.x == x && coord.y == y }
-
-          result = if coord.ship?
-                     "▪"
-                   elsif coord.near_ship?
-                     "·"
-                   else
-                     "_"
-                   end
-          print result
-          print '|'
-        end
+        draw_line y, Coord.user
+        draw_line y, Coord.computer
         puts ''
+      end
+    end
+
+    def draw_line(y, coords)
+      print sprintf(" %2d|", y)
+      (1..Board.x).each do |x|
+        coord = coords.find { |coord| coord.x == x && coord.y == y }
+        print result = if coord.ship?
+                         "▪"
+                       elsif coord.near_ship?
+                         "·"
+                       else
+                         "_"
+                       end
+        print '|'
       end
     end
   end
@@ -296,6 +267,31 @@ class Ship
       when :cruiser     then 3
       when :battleship  then 4
       else false
+    end
+  end
+
+  def fill_coords
+    self.coords.each_with_index do |coord, idx|
+      coord.ship = self
+      coord.deck = idx + 1
+      coord.deck_condition = :whole
+    end
+  end
+
+  def near_coords
+    near_coords = []
+    self.coords.each do |coord|
+      near_coords << coord.top if coord.top
+      near_coords << coord.left if coord.left
+      near_coords << coord.right if coord.right
+      near_coords << coord.down if coord.down
+      near_coords << coord.left_top if coord.left_top
+      near_coords << coord.right_top if coord.right_top
+      near_coords << coord.left_down if coord.left_down
+      near_coords << coord.right_down if coord.right_down
+    end
+    near_coords.each do |coord|
+      coord.ship = :near_ship unless coord.ship.class == Ship
     end
   end
 end
