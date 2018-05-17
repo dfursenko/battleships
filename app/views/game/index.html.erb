@@ -1,2 +1,163 @@
-<h1>Game#index</h1>
-<p>Find me in app/views/game/index.html.erb</p>
+
+<div class="game">
+  <div class="title">Игра "Морской бой"</div>
+  <div class="board">
+    <section>
+      <header>Ваши корабли</header>
+      <table>
+        <tr>
+          <td></td>
+          <td>А</td>
+          <td>Б</td>
+          <td>В</td>
+          <td>Г</td>
+          <td>Д</td>
+          <td>Е</td>
+          <td>Ж</td>
+          <td>З</td>
+          <td>И</td>
+          <td>К</td>
+        </tr>
+        <% (1..Board::BOARD_Y).each do |y| %>
+          <tr>
+            <td><%= y %></td>
+            <% (1..Board::BOARD_X).each do |x| %>
+              <% coord = Coord.user.find { |coord| coord.x == x && coord.y == y } %>
+              <td id="coord-user_<%=x%>-<%=y%>" class="coord coord-user<%= " ship" if coord.ship? %>"></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </table>
+    </section>
+
+    <section>
+      <header>Корабли противника</header>
+      <table>
+        <tr>
+          <td></td>
+          <td>А</td>
+          <td>Б</td>
+          <td>В</td>
+          <td>Г</td>
+          <td>Д</td>
+          <td>Е</td>
+          <td>Ж</td>
+          <td>З</td>
+          <td>И</td>
+          <td>К</td>
+        </tr>
+        <% (1..Board::BOARD_Y).each do |y| %>
+          <tr>
+            <td><%= y %></td>
+            <% (1..Board::BOARD_X).each do |x| %>
+              <% coord = Coord.computer.find { |coord| coord.x == x && coord.y == y } %>
+              <td id="coord-computer_<%=x%>-<%=y%>" class="coord coord-computer<%= " ship" if coord.ship? %>"></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </table>
+    </section>
+
+    <div class="panel">
+      <!--<button class="start-game">Начать игру!</button>-->
+      <div class="table">
+        <% Ship.user_ships.each do |ship| %>
+          <table>
+            <tr>
+              <% ship.coords.each do |coord| %>
+                <td id="table_user_coord_<%=coord.x%>-<%=coord.y%>" ></td>
+              <% end %>
+            </tr>
+          </table>
+
+          <% unless ship.type == Ship.next_ship_type(ship) %>
+            <br>
+          <% end %>
+
+          <% type = ship.type %>
+        <% end %>
+
+      </div>
+      <div class="table table2">
+        <% Ship.user_ships.each do |ship| %>
+          <table>
+            <tr>
+              <% ship.coords.each do |coord| %>
+                <td id="table_computer_coord_<%=coord.x%>-<%=coord.y%>" ></td>
+              <% end %>
+            </tr>
+          </table>
+
+          <% unless ship.type == Ship.next_ship_type(ship) %>
+            <br>
+          <% end %>
+
+          <% type = ship.type %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="history">
+    <header>История</header>
+    <section>
+      <ol>
+        <li>Игрок выстрелил по [10,10]. <br>Результат: <span class="green">Попадние</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="green">Попадние</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Результат: <span class="red">Промах</span></li>
+        <li>Компьютер выстрелил по [10,10]. <br>Резdультат: <span class="red">Промах</span></li>
+      </ol>
+    </section>
+  </div>
+</div>
+
+<!--<script type="text/javascript" charset="utf-8">-->
+//    $(function () {
+//        $('.coord-computer').on('click', function () {
+//            id = $(this).attr('id').split('_')[1];
+//            console.log(id);
+//
+//            var that;
+//            that = this;
+//            $.ajax({
+//                url: '/game/ajax',
+//                data: {id: id},
+//                success: function(data) {
+//                    console.log(data);
+//                }
+//            });
+//        })
+//    })
+<!--</script>-->
