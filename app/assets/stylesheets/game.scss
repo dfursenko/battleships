@@ -1,3 +1,140 @@
 // Place all the styles related to the game controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+// Place all the styles related to the Landing controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+  background: url("battleships.jpg");
+  background-size: cover;
+}
+.game {
+  margin: 0 auto;
+  width: 1000px;
+  height: 460px;
+}
+.title {
+  margin-top: 30px;
+  width: 100%;
+  font-size: 2em;
+  text-align: center;
+  //margin-bottom: 20px;
+  color: #fff;
+}
+.board {
+  float: left;
+  margin-top: 40px;
+  width: 670px;
+  height: 440px;
+  background: rgba(198, 227, 247, 0.5);
+}
+.board > section {
+  float: left;
+  /*margin: 35px;*/
+  width: 50%;
+  text-align: center;
+}
+section > header {
+  margin-top: 10px;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+.history {
+  width: 330px;
+  height: 500px;
+  background: #fff;
+  float: left;
+  background: url("old_paper.png") no-repeat;
+  background-size: contain;
+}
+.history header {
+  margin-top: 27px;
+  font-size: 1.4em;
+  color: #fff;
+  text-align: center;
+  text-shadow: 1px 2px 2px #000;
+}
+.history section {
+  width: 290px;
+  height: 390px;
+  margin: 10px 20px 40px 20px;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: #000;
+  overflow-y: scroll;
+  background: rgba(255, 255, 255, 0.3);
+}
+.history ol {
+}
+.history ol li {
+  padding-bottom: 10px;
+}
+.board > section > table {
+  width: 276px;
+  margin: 10px auto;
+  border-collapse: collapse;
+}
+td {
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  vertical-align: middle;
+  background: #fff;
+  border: 1px solid #6b98ff;
+}
+.ship {
+  background: #fff url("ship_deck.png") no-repeat 0 0;
+}
+.ship-destroyed {
+  background: #fff url("ship_destroyed.png") no-repeat 0 0;
+}
+.goal {
+  background: #fff url("cross.png") no-repeat;
+}
+.miss {
+  background: #fff url("fail.png") no-repeat;
+}
+.hear-ship {
+  background: #fff url("fail.png") no-repeat;
+}
+.panel {
+  clear: both;
+  //padding: 0 10px;
+}
+.table {
+  float: left;
+  margin-left: 27px;
+  width: 276px;
+  text-align: center;
+}
+.table2 {
+  margin-left: 58px;
+}
+.table > table {
+  display: inline-block;
+}
+.panel td {
+  width: 14px;
+  height: 14px;
+  text-align: center;
+  vertical-align: middle;
+  background: #abffd5;
+  border: 1px solid #23b66c;
+}
+.panel td.destroyed {
+  background: #ffa28e;
+  border: 1px solid #b63134;
+}
+button.start-game {
+  width: 300px;
+  height: 50px;
+  margin: 20px auto;
+  display: block;
+}
+.green {
+  color: green;
+}
+.red {
+  color: red;
+}
