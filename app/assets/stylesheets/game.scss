@@ -6,7 +6,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 body {
-  background: url("/assets/battleships.jpg");
+  background: asset_url("battleships.jpg");
   background-size: cover;
 }
 .game {
@@ -45,7 +45,7 @@ section > header {
   height: 500px;
   background: #fff;
   float: left;
-  background: url("/assets/old_paper.png") no-repeat;
+  background: asset_url("old_paper.png") no-repeat;
   background-size: contain;
 }
 .history header {
@@ -84,19 +84,19 @@ td {
   border: 1px solid #6b98ff;
 }
 .ship {
-  background: #fff url("/assets/ship_deck.png") no-repeat 0 0;
+  background: #fff asset_url("ship_deck.png") no-repeat 0 0;
 }
 .ship-destroyed {
-  background: #fff url("/assets/ship_destroyed.png") no-repeat 0 0;
+  background: #fff asset_url("ship_destroyed.png") no-repeat 0 0;
 }
 .goal {
-  background: #fff url("/assets/cross.png") no-repeat;
+  background: #fff asset_url("cross.png") no-repeat;
 }
 .miss {
-  background: #fff url("/assets/fail.png") no-repeat;
+  background: #fff asset_url("fail.png") no-repeat;
 }
 .hear-ship {
-  background: #fff url("/assets/fail.png") no-repeat;
+  background: #fff asset_url("fail.png") no-repeat;
 }
 .panel {
   clear: both;
